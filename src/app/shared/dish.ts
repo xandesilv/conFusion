@@ -2,15 +2,13 @@ import { Comment } from './comment';
 export class Dish{
   id : string;
   name: string;
- image: string;
+  image: string;
   category: string;
   featured: boolean;
   label: string;
   price: string;
-description: string;
- comments: Comment[];
-static image: any;
-static description: any;
-static comments: any;
+  description: string;
+  comments: Comment[];
+
 
 }
