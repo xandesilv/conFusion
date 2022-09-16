@@ -9,16 +9,16 @@ import { DishService } from '../services/dish.service';
   styleUrls: ['./dishdetail.component.scss']
 })
 export class DishdetailComponent implements OnInit {
+    dish: Dish;
 
-  dish: Dish;
-
-  constructor(private dishservice: DishService,
+  constructor(private dishService: DishService,
     private route: ActivatedRoute,
     private location: Location) { }
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
-    this.dish = this.dishservice.getDish(id);
+    this.dishService.getDish(id)
+    .then(dish => this.dish = dish);
   }
 
   goBack(): void {

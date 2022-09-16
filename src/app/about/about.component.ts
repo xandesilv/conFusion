@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Leader } from '../shared/leader';
-import { LEADERS } from '../shared/leaders';
 import { LeaderService } from '../services/leader.service';
 
 @Component({
@@ -9,11 +8,13 @@ import { LeaderService } from '../services/leader.service';
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit {
-leaders = LEADERS;
+leaders: Leader[];
 
-  constructor() { }
+  constructor(private leaderservice: LeaderService) { }
 
   ngOnInit(): void {
+    this.leaderservice.getLeaders()
+    .then(leaders => this.leaders = leaders);
   }
 
 }
