@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'conFusion';
+  gridsize: number = 30;
+  updateSetting(event) {
+    this.gridsize = event.value;
+  }
 }
