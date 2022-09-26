@@ -13,7 +13,7 @@ fxLayoutGap.xs="0">
         <h3 *ngIf="dish">{{dish.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image src={{dish.image}} alt={{dish.name}}>
+    <img mat-card-image src="{{BaseURL + dish.image}}" alt={{dish.name}}>
     <mat-card-content>
       <p>{{dish.description}}</p>
     </mat-card-content>
@@ -35,32 +35,39 @@ fxLayoutGap.xs="0">
       <h4 matLine> {{comment.comment}} </h4>
       <p matLine> {{comment.rating}} Stars</p>
       <p matLine>
-        <span> -- {{comment.author}} {{comment.date | date}}</span>
+        <span> -- {{comment.author}} {{comment.date | date}} </span>
       </p>
     </mat-list-item>
     <!-- TASK TRES AQUI-->
-
-    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="commentForm" #formDir="ngForm">
+<div class="form-size">
+  <h4><b> Send Us your feedback!</b> </h4>
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="commentForm" >
       <!-- PREVIEW -->
       <div [hidden]="commentForm.invalid">
         <mat-list-item>
           <p matLine>{{ commentForm.value.comment }} </p>
         <p matLine> {{ rating }} Stars</p>
         <p matLine>
-           <span> -- {{ commentForm.value.author }}</span>
+           <span> -- {{ commentForm.value.author }}  </span>
         </p>
       </mat-list-item>
-
       </div>
-
+      <!-- DATA
+      <input
+      formControlName="date"
+      type="date"
+     [ngModel]="date | date:'yyyy-MM-dd'"
+     (ngModelChange)="date = $event"
+     class="form-control form-control-rounded" #searchDate
+     >-->
       <!-- AUTOR -->
+      <p>
+      <mat-form-field class="half-width">
+          <input  matInput formControlName="author" placeholder="name" type="text" required>
 
-      <mat-form-field>
-        <p>
-          <input  matInput formControlName="author" placeholder=name type="text">
-        </p>
-      </mat-form-field>
-
+          <mat-error *ngIf="formErrors.author">{{formErrors.author}}</mat-error>
+        </mat-form-field>
+      </p>
       <!-- STARS -->
       <p>
       <mat-slider [(ngModel)]="rating"
@@ -70,31 +77,32 @@ fxLayoutGap.xs="0">
         formControlName="rating"
         > </mat-slider>
         </p>
-
         <!-- COMMENT -->
-      <mat-form-field>
-      <p>
-      <textarea  matInput formControlName="comment" placeholder="Your feedback" rows="1">  </textarea>
-      </p>
-      </mat-form-field>
-
-
-
-
-
+        <p>
+      <mat-form-field class="half-width">
+      <textarea  matInput formControlName="comment" placeholder="Your feedback" rows="1" required>  </textarea>
+      <mat-error *ngIf="formErrors.comment">{{formErrors.comment}}</mat-error>
+    </mat-form-field>
+  </p>
       <!-- SUBMIT -->
       <p>
       <button type="submit" mat-button class="background-primary text-floral-white"
-        value="{{ btnText }}"  > Submit</button>
+        [disabled]="commentForm.invalid"
+        > Submit</button>
       </p>
     </form>
     <!-- TASK TRES AQUI-->
+  </div>
   </mat-list>
 
-
-      <div fxFlex [hidden]="dish">
+      <div fxFlex [hidden]="dish || errMess">
         <mat-spinner></mat-spinner> <h4>Loading ... Please Wait</h4>
       </div>
+      <div fxFlex *ngIf="errMess">
+        <h2>Error</h2>
+        <h4>{{errMess}}</h4>
+      </div>
+
 
 
 
