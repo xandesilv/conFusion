@@ -29,6 +29,7 @@ export class DishdetailComponent implements OnInit {
     comment: Comment;
     rating = 0;
     @ViewChild('cform') commentFormDirective;
+    dishcopy: Dish;
 
     formErrors = {
       'author': '',
@@ -61,7 +62,7 @@ export class DishdetailComponent implements OnInit {
     this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
       this.route.params
       .pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish ;this.setPrevNext(dish.id); },
       errmess => this.errMess = <any>errmess );
 
     }
@@ -71,13 +72,12 @@ export class DishdetailComponent implements OnInit {
       this.next = this.dishIds[(this.dishIds.length + index + 1) % this.dishIds.length];
     }
 
-    date = new Date;
+
     createForm(): void {
       this.commentForm = this.cmt.group({
         author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
         comment: ['', [Validators.required,  Validators.maxLength(144)] ],
-        rating: ['',[Validators.required]],
-        date: [this.date]
+        rating: 3,
 
 
       });
@@ -114,17 +114,20 @@ export class DishdetailComponent implements OnInit {
 
 onSubmit(){
   this.comment = this.commentForm.value;
-    this.dish.comments.push(this.commentForm.value );
-
-    this.commentForm.reset({
-      author: '',
-      comment: '',
-      rating: '',
-
-
-
-
-    });
-    this.commentFormDirective.resetForm();
+  this.comment.date = new Date().toISOString();
+  console.log(this.comment);
+  this.dishcopy.comments.push(this.comment);
+  this.dishService.putDish(this.dishcopy)
+  .subscribe(dish => {
+    this.dish = dish; this.dishcopy = dish;
+  },
+  errmess => { this.dish = null!; this.dishcopy = null!; this.errMess = <any>errmess;}
+  );
+  this.commentForm.reset({
+    author: '',
+    rating: 3,
+    comment: '',
+  });
+  this.commentFormDirective.resetForm();
 }
 }
