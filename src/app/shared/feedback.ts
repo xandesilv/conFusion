@@ -6,6 +6,7 @@ export class Feedback {
   agree: boolean;
   contacttype: string;
   message: string;
+  fb: any;
 }
 
 export const ContactType = [
@@ -13,3 +14,7 @@ export const ContactType = [
   'Tel',
   'Email'
 ];
+
+
+
+

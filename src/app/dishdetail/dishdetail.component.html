@@ -27,7 +27,7 @@ fxLayoutGap.xs="0">
     </mat-card-actions>
   </mat-card>
 </div>
-
+<!-- FEED BACK AREA -->
 <div fxFlex="40" *ngIf="dish"  [@visibility]= "visibility" [@expand]>
   <mat-list  >
     <h3><b> Comments </b></h3>
@@ -38,10 +38,12 @@ fxLayoutGap.xs="0">
         <span> -- {{comment.author}} {{comment.date | date}} </span>
       </p>
     </mat-list-item>
-    <!-- TASK TRES AQUI-->
+
+
 <div class="form-size">
   <h4><b> Send Us your feedback!</b> </h4>
-    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="commentForm" >
+  <!--FORM -->
+  <form novalidate (ngSubmit)="onSubmit()" [formGroup]="commentForm" >
       <!-- PREVIEW -->
       <div [hidden]="commentForm.invalid">
         <mat-list-item>
@@ -52,14 +54,6 @@ fxLayoutGap.xs="0">
         </p>
       </mat-list-item>
       </div>
-      <!-- DATA
-      <input
-      formControlName="date"
-      type="date"
-     [ngModel]="date | date:'yyyy-MM-dd'"
-     (ngModelChange)="date = $event"
-     class="form-control form-control-rounded" #searchDate
-     >-->
       <!-- AUTOR -->
       <p>
       <mat-form-field class="half-width">

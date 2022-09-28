@@ -36,3 +36,11 @@ export function expand() {
       ])
   ]);
 }
+
+export function hide() {
+  return trigger('hide', [
+    transition('open => closed', [
+      animate(5000)
+    ])
+  ]);
+}

@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Feedback, ContactType } from '../shared/feedback';
+import { Params, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { FeedbackService } from '../services/feedback.service';
+import { switchMap } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { validateBasis } from '@angular/flex-layout';
-import { flyInOut } from '../animations/app.animation';
+import { animation  } from '@angular/animations';
+import { visibility, flyInOut, expand, hide } from '../animations/app.animation';
 
 @Component({
   selector: 'app-contact',
@@ -12,15 +16,21 @@ import { flyInOut } from '../animations/app.animation';
     '[@flyInOut]': 'true',
     'style': 'display: block;'
     },
-    animations: [
-      flyInOut()
-    ]
+  animations: [
+    visibility(),
+    flyInOut(),
+    expand()
+  ]
+
 })
 export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
+  errMess: string;
+  feedbackResult: any;
+
 
   formErrors = {
     'firstname': '',
@@ -49,22 +59,31 @@ export class ContactComponent implements OnInit {
       'email':         'Email not in valid format.'
     },
   };
-  constructor(private fb: FormBuilder) {
-    this.createForm();
-   }
+
+
+
+  constructor(private feedbackService: FeedbackService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private fb: FormBuilder,
+    @Inject('BaseURL') public BaseURL) {
+  }
 
   ngOnInit(): void {
+    this.createForm();
+
   }
  createForm(): void {
   this.feedbackForm = this.fb.group({
     firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
       lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
-      telnum: ['', [Validators.required, Validators.pattern] ],
+      telnum: [0, [Validators.required, Validators.pattern] ],
       email: ['', [Validators.required, Validators.email] ],
       agree: false,
       contacttype: 'None',
       message: ''
     });
+
 
 
     this.feedbackForm.valueChanges
@@ -92,17 +111,33 @@ export class ContactComponent implements OnInit {
       }
     }
   }
+
+
   onSubmit() {
-  this.feedback = this.feedbackForm.value;
-  this.feedbackForm.reset({
-    firstname: '',
-    lastname: '',
+    this.feedback = this.feedbackForm.value;
+    this.feedbackService.postFeedback(this.feedback)
+    .subscribe(feedback => {
+      this.feedback = feedback
+    }),errmess => this.errMess = <any>errmess;
+
+    this.feedbackService.getFeedback().subscribe(feedbackResult => this.feedbackResult = feedbackResult);
+      this.route.params
+      .pipe(switchMap((params: Params) => {  return this.feedbackService.getFeedback() }));
+
+      this.feedbackService.getFeaturedFeedback()
+    .subscribe(feedback => this.feedback = feedback );
+
+
+    this.feedbackForm.reset({
+      firstname: '',
+      lastname: '',
     telnum: 0,
     email: '',
     agree: false,
     contacttype: 'None',
     message: ''
   });
+
   this.feedbackFormDirective.resetForm();
 
 

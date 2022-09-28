@@ -2,19 +2,19 @@
   fxLayout="column"
   fxLayoutGap="10px">
 
-  <div fxFlex>
+  <div fxFlex >
     <div>
         <h3>Contact Us</h3>
         <hr>
     </div>
   </div>
 
-  <div fxFlex>
+  <div fxFlex  >
     <h3>Location Information</h3>
     <div fxLayout="column" fxLayout.gt-sm="row">
       <div fxFlex="50" fxFlexOffset="20px">
-        <h4>Our Address</h4>
-        <address>
+        <h4 >Our Address</h4>
+        <address >
           121, Clear Water Bay Road<br>
           Clear Water Bay, Kowloon<br>
           HONG KONG<br>
@@ -29,16 +29,32 @@
           <a mat-raised-button><i class="fa fa-skype"></i> Skype</a>
           <a mat-raised-button href="mailto:confusion@food.net"><i class="fa fa-envelope-o"></i> Email</a>
         </div>
-        </div>
-      <div fxFlex="40">
-        <h4>Map of our Location</h4>
       </div>
+      <div fxFlex="40" *ngIf="feedback"
+      >
+        <mat-list *ngIf="feedbackResult" >
+            <h3><b>Your Submission</b></h3>
+            <mat-list-item >
+            <p matLine>First Name: {{feedback.firstname}} </p>
+            <p matLine>Last Name: {{feedback.lastname}}</p>
+            <p matLine>Tel. Number: {{feedback.telnum}}</p>
+            <p matLine>Email: {{feedback.email}}</p>
+            <p matLine>Contact You?{{feedback.agree}}</p>
+            <p matLine>How? {{feedback.contacttype}}</p>
+            <p matLine>Feedback {{feedback.message}}</p>
+            </mat-list-item>
+        </mat-list>
+        <div [hidden]="feedbackResult"  >
+          <mat-spinner></mat-spinner> <h4>Loading ... Please Wait</h4>
+        </div>
+
+
     </div>
   </div>
 
   <div fxFlex fxFlexOffset="20px" class="form-size">
     <h3> Send Us your feedback! </h3>
-    <p> {{ feedbackForm.value | json }} {{ feedbackForm.status }}</p>
+
     <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field class="half-width">
@@ -80,7 +96,7 @@
         </mat-form-field>
       </p>
       <button type="submit" mat-button class="background-primary text-floral-white"
-      [disabled]="feedbackForm.invalid"> Submit</button>
+      [disabled]="feedbackForm.invalid" > Submit</button>
     </form>
 
   </div>

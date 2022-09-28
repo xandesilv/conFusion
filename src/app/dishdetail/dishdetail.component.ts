@@ -97,7 +97,7 @@ export class DishdetailComponent implements OnInit {
 
       this.onValueChanged();
     }
-    onValueChanged(data?: any) {
+    onValueChanged(_data?: any) {
       if (!this.commentForm) { return; }
       const form = this.commentForm;
       for (const field in this.formErrors) {
