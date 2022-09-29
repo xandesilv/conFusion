@@ -5,8 +5,8 @@ import { Location } from '@angular/common';
 import { FeedbackService } from '../services/feedback.service';
 import { switchMap } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { animation  } from '@angular/animations';
-import { visibility, flyInOut, expand, hide } from '../animations/app.animation';
+import { visibility, flyInOut, expand } from '../animations/app.animation';
+
 
 @Component({
   selector: 'app-contact',
@@ -19,10 +19,12 @@ import { visibility, flyInOut, expand, hide } from '../animations/app.animation'
   animations: [
     visibility(),
     flyInOut(),
-    expand()
+    expand(),
+
   ]
 
 })
+
 export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
@@ -30,6 +32,13 @@ export class ContactComponent implements OnInit {
   @ViewChild('fform') feedbackFormDirective;
   errMess: string;
   feedbackResult: any;
+
+  isShown = false;
+  fadeInOut(): void {
+    this.isShown = !this.isShown;
+  }
+
+
 
 
   formErrors = {
@@ -66,13 +75,18 @@ export class ContactComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    @Inject('BaseURL') public BaseURL) {
+    @Inject('BaseURL') public BaseURL
+    ) {
   }
 
   ngOnInit(): void {
     this.createForm();
 
   }
+
+
+
+
  createForm(): void {
   this.feedbackForm = this.fb.group({
     firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
@@ -111,6 +125,7 @@ export class ContactComponent implements OnInit {
       }
     }
   }
+
 
 
   onSubmit() {

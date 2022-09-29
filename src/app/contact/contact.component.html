@@ -30,9 +30,12 @@
           <a mat-raised-button href="mailto:confusion@food.net"><i class="fa fa-envelope-o"></i> Email</a>
         </div>
       </div>
-      <div fxFlex="40" *ngIf="feedback"
+
+
+      <div id="hideMe" fxFlex="40" *ngIf="feedback"
+      [@expand]
       >
-        <mat-list *ngIf="feedbackResult" >
+        <mat-list *ngIf="feedbackResult"   >
             <h3><b>Your Submission</b></h3>
             <mat-list-item >
             <p matLine>First Name: {{feedback.firstname}} </p>
