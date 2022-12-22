@@ -1,11 +1,9 @@
-//TEMPLATE AQUI ---------------
 import { Component, OnInit,  ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DishService } from '../services/dish.service';
 import { switchMap } from 'rxjs';
-//ATÉ AQUI ---------------
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Comment } from '../shared/comment';
 import { visibility, flyInOut, expand } from '../animations/app.animation';
@@ -27,13 +25,12 @@ import { visibility, flyInOut, expand } from '../animations/app.animation';
 
 })
 export class DishdetailComponent implements OnInit {
-    //TEMPLATE AQUI
     dish: Dish;
     errMess: string;
     dishIds: string[];
     prev: string;
     next: string;
-    //ATÉ AQUI --------------------------
+
 
     commentForm: FormGroup;
     comment: Comment;
@@ -102,7 +99,6 @@ export class DishdetailComponent implements OnInit {
       const form = this.commentForm;
       for (const field in this.formErrors) {
         if (this.formErrors.hasOwnProperty(field)) {
-          // clear previous error message (if any)
           this.formErrors[field] = '';
           const control = form.get(field);
           if (control && control.dirty && !control.valid) {
@@ -119,8 +115,6 @@ export class DishdetailComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-// VAI ATÉ AQUI. NÂO MEXER DURANTE A TASK 3
-
 
 
 onSubmit(){
